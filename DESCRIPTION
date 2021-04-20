@@ -9,4 +9,5 @@ Description: Approximately fit a GLM model using Subsampling IRLS and SGD
 License: GPL-2
 RoxygenNote: 7.1.1
 Depends:
-    sgd
+    sgd,
+    wrswoR

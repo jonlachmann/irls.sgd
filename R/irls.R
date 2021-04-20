@@ -61,8 +61,7 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
     beta <- fit$coefficients
 
     # Do new subsampling
-    if (ctrl$subs != 1) subsi <- sample.int(nobs, sub_size, prob=(w+0.1), replace=T)
-    if (ctrl$subs != 1) subsi <- sample.int(nobs, sub_size, prob=(w+0.1), replace=T)
+    if (ctrl$subs != 1) subsi <- sample_int_expjs(nobs, sub_size, prob=(w+0.1))
 
     # Do cooling schedule
     if (iter > ctrl$cooling[1]+2) {
@@ -98,7 +97,7 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
       # Increase subsample size to avoid further explosions
       if (ctrl$subs != 1) {
         sub_size <- min(sub_size*1.5, nobs)
-        subsi <- sample.int(nobs, sub_size, prob=(w+0.1), replace=T)
+        subsi <- sample_int_expjs(nobs, sub_size, prob=(w+0.1))
       }
       # Get eta
       eta <- X[subsi,,drop=F] %*% beta
