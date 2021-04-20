@@ -19,5 +19,11 @@ irls.sgd <- function (X, y, family,
   # Get the final deviance measure
   deviance <- get_deviance(sgd_res$coefficients, X, y, family)
   # Format results and return
-  return(list(coefficients=sgd_res$coefficients, deviance=deviance, rank=irls_res$rank))
+  return(list(coefficients=sgd_res$coefficients,
+              deviance=deviance,
+              rank=irls_res$rank,
+              final.irls.temp=irls_res$finaltemp,
+              irls.iters=irls_res$iter,
+              final.irls.subsize=irls_res$finalsub
+  ))
 }

@@ -113,5 +113,13 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
     betahist[iter,] <- beta
     devhist[iter] <- dev
   }
-  return(list(coefficients=beta, iter=iter, loglik=-devhist[iter]/2, rank=rankhist[iter-1], devhist=devhist[1:iter], betahist=betahist[1:iter, ,drop=F], rankhist=rankhist))
+  return(list(coefficients=beta,
+              iter=iter,
+              rank=rankhist[iter-1],
+              devhist=devhist[1:iter],
+              betahist=betahist[1:iter, ,drop=F],
+              rankhist=rankhist,
+              finaltemp=temp,
+              finalsub=sub_size
+  ))
 }
