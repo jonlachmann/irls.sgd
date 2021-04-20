@@ -99,7 +99,6 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
       if (ctrl$subs != 1) {
         sub_size <- min(sub_size*1.5, nobs)
         subsi <- sample.int(nobs, sub_size, prob=(w+0.1), replace=T)
-        print(sub_size)
       }
       # Get eta
       eta <- X[subsi,,drop=F] %*% beta
