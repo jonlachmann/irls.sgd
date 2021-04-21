@@ -18,7 +18,7 @@ irls.sgd(
 
 \item{y}{The dependent variable}
 
-\item{family}{A family for the distribution to use, i.e. "binomial()"}
+\item{family}{A glm family for the distribution to use, i.e. "binomial()"}
 
 \item{irls.control}{A list of control parameters for the Subsampling IRLS}
 

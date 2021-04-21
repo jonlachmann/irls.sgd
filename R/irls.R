@@ -3,16 +3,22 @@
 # Created by: jonlachmann
 # Created on: 2021-04-13
 
-# X is the covariates matrix
-# y is the dependent variable
-# family is the glm family
-# quant is the top quantile of observations to use for WLS, (0-1]
-# subs is the proportion of observations to use for subsampling
-# maxit is the maximum number of iterations
-# tol is the convergence tolerance
-# cooling is the cooling schedule parameters, i.e. iterations to stay constant for, initial value, decay value
-# expl is the settings to avoid exploding deviance in subsampling, i.e. iterations to not check, proportional increase signifying explosion
-
+#' Subsampling IRLS
+#'
+#' @param X A matrix containing the covariates (including an intercept if one wants to use one)
+#' @param y The dependent variable
+#' @param family A glm family for the distribution to use, i.e. "binomial()"
+#' @param ctrl A list of control parameters
+#' @details The control parameters that can be set are
+#' \itemize{
+#'  \item{"subs"}{The subsample proportion to use for each iteration}
+#'  \item{"maxit"}{The maximum number of iterations to run for}
+#'  \item{"tol"}{The relative tolerance to consider when measuring convergence (not really useful for subsampling)}
+#'  \item{"cooling"}{The cooling schedule to use, 3 numericals. First is number of iterations to stay constant for, second is the temperature to start the first cooling iteration at and third is the exponential decay.}
+#'  \item{"expl"}{The explosion detection settings, 2 numericals. First is number of iterations to not detect at and the second is the relative change in deviance to consider an explosion.}
+#' }
+#'
+#' @export irls
 irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5))) {
   temp <- ctrl$cooling[2]
   nobs <- nrow(X)

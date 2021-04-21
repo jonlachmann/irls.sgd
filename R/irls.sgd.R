@@ -2,7 +2,7 @@
 #'
 #' @param X A matrix containing the covariates (including an intercept if one wants to use one)
 #' @param y The dependent variable
-#' @param family A family for the distribution to use, i.e. "binomial()"
+#' @param family A glm family for the distribution to use, i.e. "binomial()"
 #' @param irls.control A list of control parameters for the Subsampling IRLS
 #' @param sgd.control A list of control parameters for the SGD
 #'
@@ -14,6 +14,8 @@ irls.sgd <- function (X, y, family,
   irls_res <- irls(X, y, family, irls.control)
   # Set the results from the IRLS-S as the start for SGD
   sgd.control$start <- irls_res$betahist[nrow(irls_res$betahist),]
+  # Make sure that we shuffle the data for SGD to avoid problems where there is an inherent order in the data
+  sgd.control$shuffle <- TRUE
   # Calculate the SGD model
   sgd_res <- sgd(X, y, model="glm", model.control=list(family=family$family), sgd.control)
   # Get the final deviance measure

@@ -3,7 +3,14 @@
 # Created by: jonlachmann
 # Created on: 2021-04-20
 
-# Calculate the full deviance for a model
+#' Get the deviance for a model
+#'
+#' @param beta The vector of coefficients
+#' @param X A matrix containing the covariates (including an intercept if one wants to use one)
+#' @param y The dependent variable
+#' @param family A glm family for the distribution to use, i.e. "binomial()"
+#'
+#' @export get_deviance
 get_deviance <- function(beta, X, y, family) {
   mu <- family$linkinv(X %*% beta)
   sum(family$dev.resids(y, mu, rep(1,nrow(X))))
