@@ -9,12 +9,11 @@
 #' @export irls.sgd
 irls.sgd <- function (x, y, family,
                       irls.control=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5)),
-                      sgd.control=list()) {
+                      sgd.control=list(), save_hist=F) {
   # Calculate the IRLS-S model
   irls_res <- irls(x, y, family, irls.control)
   # Set the results from the IRLS-S as the start for SGD
   sgd.control$start <- irls_res$coefficients
-  sgd.control$subs <- 0.01
   # Make sure that we shuffle the data for SGD to avoid problems where there is an inherent order in the data
   #sgd.control$shuffle <- TRUE
   # Calculate the SGD model
@@ -23,11 +22,16 @@ irls.sgd <- function (x, y, family,
   # Get the final deviance measure
   deviance <- get_deviance(sgd_res$coefficients, x, y, family)
   # Format results and return
-  return(list(coefficients=sgd_res$coefficients,
+  results <- list(coefficients=sgd_res$coefficients,
               deviance=deviance,
               rank=irls_res$rank,
               final.irls.temp=irls_res$finaltemp,
               irls.iters=irls_res$iter,
               final.irls.subsize=irls_res$finalsub
-  ))
+  )
+  if (save_hist) {
+    results$irls_hist <- irls_res$betahist
+    results$sgd_hist <- sgd_res$xhist
+  }
+  return(results)
 }
