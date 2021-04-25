@@ -11,11 +11,11 @@
 #' @param ctrl A list of control parameters
 #' @details The control parameters that can be set are
 #' \itemize{
-#'  \item{"subs"}{The subsample proportion to use for each iteration}
-#'  \item{"maxit"}{The maximum number of iterations to run for}
-#'  \item{"tol"}{The relative tolerance to consider when measuring convergence (not really useful for subsampling)}
-#'  \item{"cooling"}{The cooling schedule to use, 3 numericals. First is number of iterations to stay constant for, second is the temperature to start the first cooling iteration at and third is the exponential decay.}
-#'  \item{"expl"}{The explosion detection settings, 2 numericals. First is number of iterations to not detect at and the second is the relative change in deviance to consider an explosion.}
+#'  \item{"subs" }{The subsample proportion to use for each iteration}
+#'  \item{"maxit" }{The maximum number of iterations to run for}
+#'  \item{"tol" }{The relative tolerance to consider when measuring convergence (not really useful for subsampling)}
+#'  \item{"cooling" }{The cooling schedule to use, 3 numericals. First is number of iterations to stay constant for, second is the temperature to start the first cooling iteration at and third is the exponential decay.}
+#'  \item{"expl" }{The explosion detection settings, 2 numericals. First is number of iterations to not detect at and the second is the relative change in deviance to consider an explosion.}
 #' }
 #'
 #' @export irls
@@ -26,8 +26,8 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
   w <- matrix(0.43, nobs, 1)
 
   # Get the initial subsample if we are doing subsampling
+  sub_size <- nobs*ctrl$subs
   if (ctrl$subs != 1) {
-    sub_size <- nobs*ctrl$subs
     subsi <- sample.int(nobs, sub_size, replace=T)
   }
   else subsi <- 1:nobs
@@ -102,7 +102,9 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
 
       # Increase subsample size to avoid further explosions
       if (ctrl$subs != 1) {
+        # TODO: Make increase a tunable parameter (Turn OFF for testing subsample sizes)
         sub_size <- min(sub_size*1.5, nobs)
+        print(sub_size)
         subsi <- sample_int_expj(nobs, sub_size, prob=(w+0.1))
       }
       # Get eta

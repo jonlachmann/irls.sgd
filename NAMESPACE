@@ -3,3 +3,4 @@
 export(get_deviance)
 export(irls)
 export(irls.sgd)
+export(sgd)

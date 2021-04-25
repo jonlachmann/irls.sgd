@@ -27,10 +27,10 @@ Subsampling IRLS
 \details{
 The control parameters that can be set are
 \itemize{
- \item{"subs"}{The subsample proportion to use for each iteration}
- \item{"maxit"}{The maximum number of iterations to run for}
- \item{"tol"}{The relative tolerance to consider when measuring convergence (not really useful for subsampling)}
- \item{"cooling"}{The cooling schedule to use, 3 numericals. First is number of iterations to stay constant for, second is the temperature to start the first cooling iteration at and third is the exponential decay.}
- \item{"expl"}{The explosion detection settings, 2 numericals. First is number of iterations to not detect at and the second is the relative change in deviance to consider an explosion.}
+ \item{"subs" }{The subsample proportion to use for each iteration}
+ \item{"maxit" }{The maximum number of iterations to run for}
+ \item{"tol" }{The relative tolerance to consider when measuring convergence (not really useful for subsampling)}
+ \item{"cooling" }{The cooling schedule to use, 3 numericals. First is number of iterations to stay constant for, second is the temperature to start the first cooling iteration at and third is the exponential decay.}
+ \item{"expl" }{The explosion detection settings, 2 numericals. First is number of iterations to not detect at and the second is the relative change in deviance to consider an explosion.}
 }
 }

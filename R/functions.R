@@ -11,7 +11,7 @@
 #' @param family A glm family for the distribution to use, i.e. "binomial()"
 #'
 #' @export get_deviance
-get_deviance <- function(beta, X, y, family) {
-  mu <- family$linkinv(X %*% beta)
-  sum(family$dev.resids(y, mu, rep(1,nrow(X))))
+get_deviance <- function(beta, x, y, family) {
+  mu <- family$linkinv(x %*% beta)
+  sum(family$dev.resids(y, mu, rep(1,nrow(x))))
 }

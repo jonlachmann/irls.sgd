@@ -1,0 +1,84 @@
+---
+title: "sgd_demo"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{sgd_demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+This vignette gives a quick demonstration of Gradient Descent, Stochastic Gradient Descent and finally Batch Stochastic Gradient Descent.
+
+We begin by creating functions for an objective function, its gradient and a function to generate some data.
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(irls.sgd)
+
+sgd.demo.fun <- function (x, data) {
+  sum(t(data) * c(sin(x[1]), cos(x[2])))
+}
+
+sgd.demo.grad <- function (x, data) {
+  rowMeans(t(data) * c(cos(x[1]), -sin(x[2])))
+}
+
+sgd.demo.data <- function (nobs, means=c(0.5,2)) {
+  x1 <- rnorm(nobs, means[1],2)
+  x2 <- rnorm(nobs, means[2],2)
+  return(matrix(c(x1,x2), ncol=2))
+}
+```
+We then also create a function to generate a grid of function values to be able to plot a contour plot as background for our demonstration.
+```{r}
+sgd.demo.grid <- function (data, fun=sgd.demo.fun, lims=c(0.9*pi,pi*2.1,0,pi*2), resolution=pi/20) {
+  xgrid <- seq(lims[1], lims[2], resolution)
+  ygrid <- seq(lims[3], lims[4], resolution)
+  fvals <- matrix(NA, length(xgrid), length(ygrid))
+  for (i in 1:length(xgrid)) {
+    for (j in 1:length(ygrid)) {
+      x <- c(xgrid[i], ygrid[j])
+      fvals[i,j] <- fun(x, data)
+    }
+  }
+  return(list(x=xgrid, y=ygrid, z=fvals))
+}
+```
+With all these functions in place it is now time to generate the demonstration. We begin by setting a seed and generating the data, then we also create the grid.
+```{r}
+set.seed(1234)
+data <- sgd.demo.data(1000)
+grid <- sgd.demo.grid(data)
+```
+With the data in place we start by running Gradient Descent, this is done by setting `subs=1`, meaning we will use 100% of the data to estimate the gradient at each step.
+```{r}
+gd_res <- irls.sgd::sgd(sgd.demo.grad, data, ctrl=list(start=c(pi*1.5-1.5,pi-2.8), alpha=0.25, decay=0.999, maxit=50))
+```
+We then do the same for SGD and BSGD, using 0.1% (1 observation) and 5% (50 observations) at each iteration.
+```{r}
+sgd_res <- irls.sgd::sgd(sgd.demo.grad, data, ctrl=list(subs=0.001, start=c(pi*1.5-1.5,pi+2.8), alpha=0.1, decay=0.999, maxit=300))
+bsgd_res <- irls.sgd::sgd(sgd.demo.grad, data, ctrl=list(subs=0.05, start=c(pi*1.5+1.5,pi+2.8), alpha=0.1, decay=0.999, maxit=100))
+```
+With all the simulations done, we create a plot showing the results.
+```{r, fig.width=7, fig.height=6}
+# Contour plot
+contour(grid, main="Gradient Descent Variations")
+
+# GD line and points
+lines(gd_res$xhist[,1], gd_res$xhist[,2], col="blue")
+points(gd_res$xhist[,1], gd_res$xhist[,2], col="blue", pch=15)
+
+# SGD line and points
+lines(sgd_res$xhist[,1], sgd_res$xhist[,2], col="red")
+points(sgd_res$xhist[,1], sgd_res$xhist[,2], col="red", pch=16)
+
+# BSGD line and points
+lines(bsgd_res$xhist[,1], bsgd_res$xhist[,2], col="darkgreen")
+points(bsgd_res$xhist[,1], bsgd_res$xhist[,2], col="darkgreen", pch=17)
+
+legend(5.5,1, legend=c("Gradient Descent", "Stochastic GD", "Batch Stochastic GD"),col=c("blue", "red", "darkgreen"), pch=c(15,16,17))
+```
