@@ -103,7 +103,7 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
       # Increase subsample size to avoid further explosions
       if (ctrl$subs != 1) {
         # Increase subsample size by increase factor expl[3]
-        sub_size <- min(sub_size*expl[3], nobs)
+        sub_size <- min(sub_size*ctrl$expl[3], nobs)
         subsi <- sample_int_expj(nobs, sub_size, prob=(w+0.1))
       }
       # Get eta
