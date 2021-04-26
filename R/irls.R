@@ -14,12 +14,12 @@
 #'  \item{"subs" }{The subsample proportion to use for each iteration}
 #'  \item{"maxit" }{The maximum number of iterations to run for}
 #'  \item{"tol" }{The relative tolerance to consider when measuring convergence (not really useful for subsampling)}
-#'  \item{"cooling" }{The cooling schedule to use, 3 numericals. First is number of iterations to stay constant for, second is the temperature to start the first cooling iteration at and third is the exponential decay.}
-#'  \item{"expl" }{The explosion detection settings, 2 numericals. First is number of iterations to not detect at and the second is the relative change in deviance to consider an explosion.}
+#'  \item{"cooling" }{The cooling schedule to use, 3 numericals. First is number of iterations to stay constant for, the second is the temperature to start the first cooling iteration at and third is the exponential decay.}
+#'  \item{"expl" }{The explosion detection settings, 3 numericals. First is number of iterations to not detect at, the second is the relative change in deviance to consider an explosion and the third is by which factor to change the subsample size at an explosion.}
 #' }
 #'
 #' @export irls
-irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5))) {
+irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5,1))) {
   temp <- ctrl$cooling[2]
   nobs <- nrow(X)
   nvars <- ncol(X)
@@ -102,9 +102,8 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
 
       # Increase subsample size to avoid further explosions
       if (ctrl$subs != 1) {
-        # TODO: Make increase a tunable parameter (Turn OFF for testing subsample sizes)
-        sub_size <- min(sub_size*1.5, nobs)
-        print(sub_size)
+        # Increase subsample size by increase factor expl[3]
+        sub_size <- min(sub_size*expl[3], nobs)
         subsi <- sample_int_expj(nobs, sub_size, prob=(w+0.1))
       }
       # Get eta
