@@ -1,6 +1,5 @@
 \name{irls.sgd-package}
 \alias{irls.sgd-package}
-\alias{irls.sgd}
 \docType{package}
 \title{
 \packageTitle{irls.sgd}
@@ -13,8 +12,7 @@
 The DESCRIPTION file:
 \packageDESCRIPTION{irls.sgd}
 \packageIndices{irls.sgd}
-~~ An overview of how to use the package, including the most important ~~
-~~ functions ~~
+Functions of interest are `irls`, `irls.sgd`, `sgd` and `glm.sgd`.
 }
 \author{
 \packageAuthor{irls.sgd}

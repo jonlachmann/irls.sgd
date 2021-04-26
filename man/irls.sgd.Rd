@@ -5,24 +5,25 @@
 \title{Subsampling IRLS with SGD}
 \usage{
 irls.sgd(
-  X,
+  x,
   y,
   family,
   irls.control = list(subs = 1, maxit = 100, tol = 1e-07, cooling = c(3, 0.9, 0.95),
     expl = c(3, 1.5)),
-  sgd.control = list()
+  sgd.control = list(subs = 1, alpha = 5e-04, ),
+  save_hist = F
 )
 }
 \arguments{
-\item{X}{A matrix containing the covariates (including an intercept if one wants to use one)}
+\item{x}{A matrix containing the covariates (including an intercept if one wants to use one)}
 
 \item{y}{The dependent variable}
 
 \item{family}{A glm family for the distribution to use, i.e. "binomial()"}
 
-\item{irls.control}{A list of control parameters for the Subsampling IRLS}
+\item{irls.control}{A list of control parameters for the Subsampling IRLS (see ?irls for details).}
 
-\item{sgd.control}{A list of control parameters for the SGD}
+\item{sgd.control}{A list of control parameters for the SGD (see ?sgd for details, note that sgd.control$start will be overwritten).}
 }
 \description{
 Subsampling IRLS with SGD

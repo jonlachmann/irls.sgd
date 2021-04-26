@@ -4,16 +4,16 @@
 \alias{get_deviance}
 \title{Get the deviance for a model}
 \usage{
-get_deviance(beta, X, y, family)
+get_deviance(beta, x, y, family)
 }
 \arguments{
 \item{beta}{The vector of coefficients}
 
-\item{X}{A matrix containing the covariates (including an intercept if one wants to use one)}
-
 \item{y}{The dependent variable}
 
 \item{family}{A glm family for the distribution to use, i.e. "binomial()"}
+
+\item{X}{A matrix containing the covariates (including an intercept if one wants to use one)}
 }
 \description{
 Get the deviance for a model

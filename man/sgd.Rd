@@ -6,32 +6,28 @@
 \usage{
 sgd(
   gradient,
-  start = NULL,
   data = NULL,
-  alpha = 5e-04,
-  decay = NULL,
-  subs = 1,
-  maxit = 5000
+  ctrl = list(start, alpha, decay, subs, maxit, histfreq)
 )
 }
 \arguments{
-\item{gradient}{The gradient of the objective function}
+\item{gradient}{The gradient of the objective function.}
 
-\item{start}{The starting point, NULL means random around 0}
+\item{data}{The dataset to use for the gradient, if applicable, if NULL, no data is used.}
 
-\item{data}{The dataset to use for the gradient, if necessary}
-
-\item{alpha}{The initial step size}
-
-\item{decay}{The exponential decay of the step size per iteration}
-
-\item{subs}{The subsample percentage to use at each iteration}
-
-\item{maxit}{The maximum number of iterations to run for}
+\item{ctrl}{A list of control parameters.}
 }
 \description{
 (Batch) (Stochastic) Gradient Descent
 }
 \details{
 The control parameters that can be set are
+\itemize{
+ \item{"start" }{The starting point, NULL means random around 0.}
+ \item{"alpha" }{The initial step size, defaults to 0.0005.}
+ \item{"decay" }{The exponential decay of the step size per iteration, defaults to 0.999.}
+ \item{"subs" }{The subsample percentage to use at each iteration, defaults to 1 (100\%).}
+ \item{"maxit" }{The maximum number of iterations to run for, defaults to 1000.}
+ \item{"histfreq" }{The number of iterations between stored history frames, defaults to 50.}
+}
 }

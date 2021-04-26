@@ -5,10 +5,10 @@
 
 #' Gradient for GLM
 #'
-#' @param x A matrix containing the covariates (including an intercept if one wants to use one)
-#' @param y The dependent variable
-#' @param theta The coefficient vector to use
-#' @param family A glm family for the distribution to use, i.e. "binomial()"
+#' @param x A matrix containing the covariates (including an intercept if one wants to use one).
+#' @param y The dependent variable.
+#' @param theta The coefficient vector to use.
+#' @param family A glm family for the distribution to use, i.e. "binomial()".
 #'
 #' @export glm.grad
 glm.grad <- function (x, y, theta, family) {
@@ -20,10 +20,10 @@ glm.grad <- function (x, y, theta, family) {
 
 #' (Batch) (Stochastic) Gradient Descent for GLM
 #'
-#' @param x A matrix containing the covariates (including an intercept if one wants to use one)
-#' @param y The dependent variable
-#' @param family A glm family for the distribution to use, i.e. "binomial()"
-#' @param ... parameters to pass to the sgd function
+#' @param x A matrix containing the covariates (including an intercept if one wants to use one).
+#' @param y The dependent variable.
+#' @param family A glm family for the distribution to use, i.e. "binomial()".
+#' @param sgd.ctrl control parameters to pass to the sgd function (see ?sgd for details).
 #'
 #' @export glm.sgd
 glm.sgd <- function (x, y, family, sgd.ctrl=NULL) {
@@ -37,17 +37,21 @@ glm.sgd <- function (x, y, family, sgd.ctrl=NULL) {
 
 #' (Batch) (Stochastic) Gradient Descent
 #'
-#' @param gradient The gradient of the objective function
-#' @param start The starting point, NULL means random around 0
-#' @param data The dataset to use for the gradient, if necessary
-#' @param alpha The initial step size
-#' @param decay The exponential decay of the step size per iteration
-#' @param subs The subsample percentage to use at each iteration
-#' @param maxit The maximum number of iterations to run for
+#' @param gradient The gradient of the objective function.
+#' @param data The dataset to use for the gradient, if applicable, if NULL, no data is used.
+#' @param ctrl A list of control parameters.
 #' @details The control parameters that can be set are
+#' \itemize{
+#'  \item{"start" }{The starting point, NULL means random around 0.}
+#'  \item{"alpha" }{The initial step size, defaults to 0.0005.}
+#'  \item{"decay" }{The exponential decay of the step size per iteration, defaults to 0.999.}
+#'  \item{"subs" }{The subsample percentage to use at each iteration, defaults to 1 (100\%).}
+#'  \item{"maxit" }{The maximum number of iterations to run for, defaults to 1000.}
+#'  \item{"histfreq" }{The number of iterations between stored history frames, defaults to 50.}
+#' }
 #'
 #' @export sgd
-sgd <- function (gradient, data=NULL, ctrl=list(start, alpha, decay, subs, maxit)) {
+sgd <- function (gradient, data=NULL, ctrl=list(start, alpha, decay, subs, maxit, histfreq)) {
   # Initialize coefficients from start or randomly
   if (is.null(ctrl$start)) x <- rnorm(ncol(data)-1)
   else x <- ctrl$start
@@ -57,7 +61,7 @@ sgd <- function (gradient, data=NULL, ctrl=list(start, alpha, decay, subs, maxit
   if (is.null(ctrl$alpha)) ctrl$alpha <- 0.0005
   if (is.null(ctrl$decay)) ctrl$decay <- 0.999
   if (is.null(ctrl$subs)) ctrl$subs <- 1
-  if (is.null(ctrl$maxit)) ctrl$maxit <- 5000
+  if (is.null(ctrl$maxit)) ctrl$maxit <- 1000
   if (is.null(ctrl$histfreq)) ctrl$histfreq <- 50
 
   # Get observation count and set subsample size
