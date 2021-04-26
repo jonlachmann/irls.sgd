@@ -58,6 +58,7 @@ sgd <- function (gradient, data=NULL, ctrl=list(start, alpha, decay, subs, maxit
   if (is.null(ctrl$decay)) ctrl$decay <- 0.999
   if (is.null(ctrl$subs)) ctrl$subs <- 1
   if (is.null(ctrl$maxit)) ctrl$maxit <- 5000
+  if (is.null(ctrl$histfreq)) ctrl$histfreq <- 50
 
   # Get observation count and set subsample size
   if (!is.null(data)) {
@@ -69,7 +70,7 @@ sgd <- function (gradient, data=NULL, ctrl=list(start, alpha, decay, subs, maxit
   if (is.null(ctrl$decay)) ctrl$decay <- (maxit-2)/maxit
 
   # Set up matrix for history
-  xhist <- matrix(NA, ctrl$maxit+1, nvars)
+  xhist <- matrix(NA, ctrl$maxit/ctrl$histfreq+1, nvars)
   xhist[1,] <- x
 
   # Run (S)GD
@@ -79,7 +80,7 @@ sgd <- function (gradient, data=NULL, ctrl=list(start, alpha, decay, subs, maxit
     ctrl$alpha <- ctrl$alpha * ctrl$decay
     if (!is.null(data)) x <- x - ctrl$alpha * gradient(x, data[sub_idx,,drop=F])
     else x <- x - ctrl$alpha * gradient(x)
-    xhist[i+1,] <- x
+    if (i %% ctrl$histfreq == 0) xhist[i/ctrl$histfreq+1,] <- x
   }
   return(list(x=x, xhist=xhist))
 }
