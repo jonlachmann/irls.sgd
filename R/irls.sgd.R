@@ -1,3 +1,6 @@
+#' @useDynLib irls.sgd, .registration=TRUE
+NULL
+
 #' Subsampling IRLS with SGD
 #'
 #' @param x A matrix containing the covariates (including an intercept if one wants to use one)

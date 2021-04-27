@@ -23,8 +23,8 @@ sgd.demo.fun <- function (x, data) {
   sum(t(data) * c(sin(x[1]), cos(x[2])))
 }
 
-sgd.demo.grad <- function (x, data) {
-  rowMeans(t(data) * c(cos(x[1]), -sin(x[2])))
+sgd.demo.grad <- function (x, data, idx) {
+  rowMeans(t(data[idx,,drop=F]) * c(cos(x[1]), -sin(x[2])))
 }
 
 sgd.demo.data <- function (nobs, means=c(0.5,2)) {

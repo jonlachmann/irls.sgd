@@ -4,7 +4,7 @@
 \alias{glm.grad}
 \title{Gradient for GLM}
 \usage{
-glm.grad(x, y, theta, family)
+glm.grad(x, y, theta, idx, family)
 }
 \arguments{
 \item{x}{A matrix containing the covariates (including an intercept if one wants to use one).}

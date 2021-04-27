@@ -8,14 +8,15 @@
 #' @param x A matrix containing the covariates (including an intercept if one wants to use one).
 #' @param y The dependent variable.
 #' @param theta The coefficient vector to use.
+#' @param idx The observation indices to use.
 #' @param family A glm family for the distribution to use, i.e. "binomial()".
 #'
 #' @export glm.grad
-glm.grad <- function (x, y, theta, family) {
+glm.grad <- function (x, y, theta, idx, family) {
   # TODO: Does not work for the Gamma family yet
-  m <- length(y)
-  eta <- family$linkinv(x%*%theta)
-  return(t(x)%*%(eta-y)/m)
+  m <- length(idx)
+  eta <- family$linkinv(x[idx,,drop=F]%*%theta)
+  return(t(x[idx,,drop=F])%*%(eta-y[idx])/m)
 }
 
 #' (Batch) (Stochastic) Gradient Descent for GLM
@@ -27,8 +28,10 @@ glm.grad <- function (x, y, theta, family) {
 #'
 #' @export glm.sgd
 glm.sgd <- function (x, y, family, sgd.ctrl=NULL) {
-  grad.fun <- function (theta, data) {
-    glm.grad(data[,-1,drop=F], data[,1], theta, family)
+  if (family$family == "binomial") grad.fun <- logisticG
+  else if (family$family == "gaussian") grad.fun <- gaussianG
+  else grad.fun <- function (theta, data, sub_idx) {
+    glm.grad(data[,-1,drop=F], data[,1], sub_idx, theta, family)
   }
   sgd_res <- sgd(grad.fun, data=cbind(y,x), sgd.ctrl)
   sgd_res$coefficients <- sgd_res$x
@@ -82,7 +85,7 @@ sgd <- function (gradient, data=NULL, ctrl=list(start, alpha, decay, subs, maxit
     if (ctrl$subs != 1) sub_idx <- sample(1:nobs, sub_size, replace=T)
     else sub_idx <- 1:nobs
     ctrl$alpha <- ctrl$alpha * ctrl$decay
-    if (!is.null(data)) x <- x - ctrl$alpha * gradient(x, data[sub_idx,,drop=F])
+    if (!is.null(data)) x <- x - ctrl$alpha * gradient(x, data, sub_idx)
     else x <- x - ctrl$alpha * gradient(x)
     if (i %% ctrl$histfreq == 0) xhist[i/ctrl$histfreq+1,] <- x
   }
