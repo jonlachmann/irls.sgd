@@ -20,8 +20,8 @@
 #'
 #' @export irls
 irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5,1))) {
-  if (length(expl) != 3) stop("expl needs to be a numeric of length 3")
-  if (length(cooling) != 3) stop("cooling needs to be a numeric of length 3")
+  if (length(ctrl$expl) != 3) stop("expl needs to be a numeric of length 3")
+  if (length(ctrl$expl) != 3) stop("cooling needs to be a numeric of length 3")
 
   temp <- ctrl$cooling[2]
   nobs <- nrow(X)

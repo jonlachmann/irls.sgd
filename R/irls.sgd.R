@@ -25,7 +25,7 @@ irls.sgd <- function (x, y, family,
 
   # Get the final deviance measure
   deviance <- get_deviance(sgd_res$coefficients, x, y, family)
-  
+
   # Format results and return
   results <- list(coefficients=sgd_res$coefficients,
               deviance=deviance,
