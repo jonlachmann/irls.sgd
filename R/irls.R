@@ -20,6 +20,9 @@
 #'
 #' @export irls
 irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5,1))) {
+  if (length(expl) != 3) stop("expl needs to be a numeric of length 3")
+  if (length(cooling) != 3) stop("cooling needs to be a numeric of length 3")
+
   temp <- ctrl$cooling[2]
   nobs <- nrow(X)
   nvars <- ncol(X)
@@ -61,7 +64,6 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
     if (iter > 1) betaold <- beta
     # Do WLS
     fit <- .Call(stats:::C_Cdqrls, X[subsi,,drop=F] * as.numeric(w[subsi,drop=F]), z * w[subsi,drop=F], 1e-7, check=FALSE)
-
     # Extract betas and rank
     rankhist[iter] <- fit$rank
     beta <- fit$coefficients

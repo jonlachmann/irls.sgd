@@ -12,17 +12,20 @@ NULL
 #' @export irls.sgd
 irls.sgd <- function (x, y, family,
                       irls.control=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5)),
-                      sgd.control=list(subs=1, alpha=0.0005, ), save_hist=F) {
+                      sgd.control=list(subs=1, alpha=0.0005), save_hist=F) {
 
   # Calculate the S-IRLS model
   irls_res <- irls(x, y, family, irls.control)
+
   # Set the results from the IRLS-S as the start for SGD
   sgd.control$start <- irls_res$coefficients
 
   # Calculate the SGD model
   sgd_res <- glm.sgd(x, y, family, sgd.control)
+
   # Get the final deviance measure
   deviance <- get_deviance(sgd_res$coefficients, x, y, family)
+  
   # Format results and return
   results <- list(coefficients=sgd_res$coefficients,
               deviance=deviance,

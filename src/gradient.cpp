@@ -5,7 +5,7 @@ Eigen::MatrixXd getRows(const Eigen::Map<Eigen::MatrixXd> &mat,
                         const Eigen::Map<Eigen::VectorXi> &rows) {
     Eigen::MatrixXd ret(rows.size(), mat.cols());
     for (int i = 0; i < rows.size(); i++) {
-        ret.row(i) = mat.row(rows(i));
+        ret.row(i) = mat.row(rows(i)-1);
     }
     return(ret);
 }
