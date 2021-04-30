@@ -13,6 +13,8 @@ glm.grad(x, y, theta, idx, family)
 
 \item{theta}{The coefficient vector to use.}
 
+\item{idx}{The observation indices to use.}
+
 \item{family}{A glm family for the distribution to use, i.e. "binomial()".}
 }
 \description{
