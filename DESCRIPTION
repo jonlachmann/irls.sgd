@@ -13,7 +13,8 @@ Depends:
     RcppEigen
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    markdown
 LinkingTo:
     Rcpp,
     RcppEigen
