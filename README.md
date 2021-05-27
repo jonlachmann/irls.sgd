@@ -1,7 +1,7 @@
 # irls.sgd
 Approximately fit a GLM model using Subsampling IRLS and SGD
 
-The `irls.sg` package provides functions to acquire an approximate estimate of the MLE, specifically tailored to be used in Laplace approximations for BGNLM in scenarios when large amounts of data is available.
+The `irls.sgd` package provides functions to acquire an approximate estimate of the MLE, specifically tailored to be used in Laplace approximations for BGNLM in scenarios when large amounts of data is available.
 
 # Installation and getting started
 To install and load the package, just run
