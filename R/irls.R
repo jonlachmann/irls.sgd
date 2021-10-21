@@ -63,10 +63,12 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
 
     if (iter > 1) betaold <- beta
     # Do WLS
-    fit <- .Call(stats:::C_Cdqrls, X[subsi,,drop=F] * as.numeric(w[subsi,drop=F]), z * w[subsi,drop=F], 1e-7, check=FALSE)
+    #fit <- .Call(stats:::C_Cdqrls, X[subsi,,drop=F] * as.numeric(w[subsi,drop=F]), z * w[subsi,drop=F], 1e-7, check=FALSE)
+    beta <- qrls(X[subsi,,drop=F], w[subsi,drop=F], z)
     # Extract betas and rank
-    rankhist[iter] <- fit$rank
-    beta <- fit$coefficients
+    #rankhist[iter] <- fit$rank
+    rankhist[iter] <- length(beta)
+    #beta <- fit$coefficients
 
     # Do new subsampling
     if (ctrl$subs != 1) subsi <- sample_int_expj(nobs, sub_size, prob=(w+0.1))

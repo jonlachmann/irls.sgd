@@ -21,3 +21,13 @@ gaussianG <- function(theta, data, idx) {
     .Call(`_irls_sgd_gaussianG`, theta, data, idx)
 }
 
+#' QR for least squares
+#'
+#' @param x The design matrix
+#' @param w The weights vector
+#' @param z The working response vector
+#' @export
+qrls <- function(x, w, z) {
+    .Call(`_irls_sgd_qrls`, x, w, z)
+}
+

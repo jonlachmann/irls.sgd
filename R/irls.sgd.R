@@ -11,7 +11,7 @@ NULL
 #'
 #' @export irls.sgd
 irls.sgd <- function (x, y, family,
-                      irls.control=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5)),
+                      irls.control=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5,1)),
                       sgd.control=list(subs=1, alpha=0.0005), save_hist=F) {
 
   # Calculate the S-IRLS model

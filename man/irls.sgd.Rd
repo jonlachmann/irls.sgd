@@ -9,7 +9,7 @@ irls.sgd(
   y,
   family,
   irls.control = list(subs = 1, maxit = 100, tol = 1e-07, cooling = c(3, 0.9, 0.95),
-    expl = c(3, 1.5)),
+    expl = c(3, 1.5, 1)),
   sgd.control = list(subs = 1, alpha = 5e-04),
   save_hist = F
 )

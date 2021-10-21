@@ -32,10 +32,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qrls
+Eigen::VectorXd qrls(const Eigen::Map<Eigen::MatrixXd>& x, const Eigen::Map<Eigen::VectorXd>& w, const Eigen::Map<Eigen::VectorXd>& z);
+RcppExport SEXP _irls_sgd_qrls(SEXP xSEXP, SEXP wSEXP, SEXP zSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::MatrixXd>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type w(wSEXP);
+    Rcpp::traits::input_parameter< const Eigen::Map<Eigen::VectorXd>& >::type z(zSEXP);
+    rcpp_result_gen = Rcpp::wrap(qrls(x, w, z));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_irls_sgd_logisticG", (DL_FUNC) &_irls_sgd_logisticG, 3},
     {"_irls_sgd_gaussianG", (DL_FUNC) &_irls_sgd_gaussianG, 3},
+    {"_irls_sgd_qrls", (DL_FUNC) &_irls_sgd_qrls, 3},
     {NULL, NULL, 0}
 };
 
