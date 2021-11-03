@@ -14,8 +14,13 @@ irls.sgd <- function (x, y, family,
                       irls.control=list(subs=1, maxit=100, tol=1e-7, cooling = c(3,0.9,0.95), expl = c(3,1.5,1)),
                       sgd.control=list(subs=1, alpha=0.0005), save_hist=F) {
 
-  # Calculate the S-IRLS model
-  irls_res <- irls(x, y, family, irls.control)
+  if (irls.control$maxit > 0) {
+    # Calculate the S-IRLS model
+    irls_res <- irls(x, y, family, irls.control)
+  } else {
+    # If no S-IRLS iterations are requested, provide a random starting point for SGD
+    irls_res <- list(coefficients=rnorm(ncol(x)))
+  }
 
   # Set the results from the IRLS-S as the start for SGD
   sgd.control$start <- irls_res$coefficients
