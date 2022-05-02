@@ -19,7 +19,7 @@ irls.sgd <- function (x, y, family,
     irls_res <- irls(x, y, family, irls.control)
   } else {
     # If no S-IRLS iterations are requested, provide a random starting point for SGD
-    irls_res <- list(coefficients=rnorm(ncol(x)))
+    irls_res <- list(coefficients=rnorm(ncol(x)), rank=ncol(x), iter=0, finaltemp=0, finalsub=0)
   }
 
   # Set the results from the IRLS-S as the start for SGD
