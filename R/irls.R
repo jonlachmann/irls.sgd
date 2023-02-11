@@ -88,6 +88,7 @@ irls <- function (X, y, family, ctrl=list(subs=1, maxit=100, tol=1e-7, cooling =
     # Calculate deviance
     devold <- dev
     dev <- sum(family$dev.resids(y[subsi], mu, 1))/ctrl$subs
+    if (is.infinite(dev)) dev <- .Machine$double.xmax
 
     # Check convergence
     if ((abs(dev - devold)) / (0.1 + abs(dev)) < ctrl$tol) {
